@@ -1,5 +1,6 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
+  <add-friend @add-friend="addFriend"/>
   <ul class="contacts_list">
     <friend-contacts
       v-for="friend in friends"
@@ -10,17 +11,20 @@
       :email="friend.email"
       :avatarShown="friend.avatarShown"
       @show-avatar="showFriendAvatar"
+      @delete-friend="deleteFriend"
     />
   </ul>
 </template>
 
 <script>
 import FriendContacts from "./components/FriendContacts.vue";
+import AddFriend from "./components/AddFriend.vue";
 
 export default {
   name: "App",
   components: {
     FriendContacts,
+    AddFriend,
   },
   data() {
     return {
@@ -46,6 +50,19 @@ export default {
     showFriendAvatar(id) {
       const identifiedFriend = this.friends.find(friend => friend.id === id);
       identifiedFriend.avatarShown = !identifiedFriend.avatarShown;
+    },
+    addFriend(friend) {
+      const newFriend = {
+        id: new Date().toISOString(),
+        name: friend.name,
+        phone: friend.phone,
+        email: friend.email,
+        avatarShown: false,
+      };
+      this.friends.push(newFriend);
+    },
+    deleteFriend(id) {
+      this.friends = this.friends.filter(friend => friend.id !== id);
     }
   }
 };
