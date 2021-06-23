@@ -1,7 +1,16 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <ul class="contacts_list">
-    <friend-contacts v-for="friend in friends" :key="friend.id" :name="friend.name" :phone="friend.phone" :email="friend.email"/>
+    <friend-contacts
+      v-for="friend in friends"
+      :key="friend.id"
+      :id="friend.id"
+      :name="friend.name"
+      :phone="friend.phone"
+      :email="friend.email"
+      :avatarShown="friend.avatarShown"
+      @show-avatar="showFriendAvatar"
+    />
   </ul>
 </template>
 
@@ -21,16 +30,24 @@ export default {
           name: "Manuel Lorenz",
           phone: "0123 45678 90",
           email: "manuel@localhost.com",
+          avatarShown: false,
         },
         {
           id: "julie",
           name: "Julie Jones",
           phone: "4952 22304 12",
           email: "julie@localhost.com",
+          avatarShown: false,
         },
       ],
     };
   },
+  methods: {
+    showFriendAvatar(id) {
+      const identifiedFriend = this.friends.find(friend => friend.id === id);
+      identifiedFriend.avatarShown = !identifiedFriend.avatarShown;
+    }
+  }
 };
 </script>
 
